@@ -14,6 +14,11 @@ public class Test : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Pc에서 입력값
+        if(Input.GetKeyDown(KeyCode.A))  
+        {
+            // 캐릭터 왼쪽으로 이동
+        } 
         
     }
 }
