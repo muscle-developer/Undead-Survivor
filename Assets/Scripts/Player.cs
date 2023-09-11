@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Rigidbody2D playerRigidBody;
     [SerializeField]
-    private float playerSpeed = 1.0f;
+    private float playerSpeed = 5.0f;
 
     void Awake()
     {
@@ -18,19 +19,25 @@ public class Player : MonoBehaviour
         playerRigidBody = GetComponent<Rigidbody2D>();
     }
 
-    void Update()
-    {
-        // x와 y축에 가로,세로로 이동 할 수 있도록 입력값 받아오기
-        inputVector.x = Input.GetAxis("Horizontal");
-        inputVector.y = Input.GetAxis("Vertical");
-    }   
+    // void Update()
+    // {
+    //     // x와 y축에 가로,세로로 이동 할 수 있도록 입력값 받아오기
+    //     inputVector.x = Input.GetAxis("Horizontal");
+    //     inputVector.y = Input.GetAxis("Vertical");
+    // }   
 
     // 물리 연산 프레임마다 호출되는 생명주기 함수
     void FixedUpdate()
     {   
         // 이동할 위치
-        Vector2 nextVector = inputVector.normalized * playerSpeed * Time.fixedDeltaTime;
+        Vector2 nextVector = inputVector * playerSpeed * Time.fixedDeltaTime;
         // 위치 이동 - 현재 나의 위치 + 내가 이동할 위치
         playerRigidBody.MovePosition(playerRigidBody.position + nextVector);
     }   
+
+    // Input System 에서 제공하는 이동함수
+    private void OnMove(InputValue value)
+    {
+        inputVector = value.Get<Vector2>();
+    }
 }
