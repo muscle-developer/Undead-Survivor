@@ -8,6 +8,10 @@ public class Player : MonoBehaviour
 {
     [SerializeField]
     private Vector2 inputVector;
+    public Vector2 InputVector
+    {
+        get => inputVector;
+    }
     [SerializeField]
     private Rigidbody2D playerRigidBody;
     [SerializeField]
