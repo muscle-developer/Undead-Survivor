@@ -9,7 +9,7 @@ public class Reposition : MonoBehaviour
     // 오브젝트 충돌을 감지하는 함수 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        // 오브젝트에 Tag가 Area일때만 실행되도록 
+        // 오브젝트에 Tag가 Area가 아니어야 실행되도록
         if(!collision.CompareTag("Area"))
             return;
 
@@ -18,7 +18,6 @@ public class Reposition : MonoBehaviour
         Vector3 tilePos = this.transform.position;
 
         // 플레이어 위치 - 타일맵 위치를 함으로 써 x, y축의 거리를 계산한다.
-        // Mathf.Abs - 절대값(값이 음수일 때 양수 값으로 만들기 위해)
         float diffx = Mathf.Abs(playerPos.x - tilePos.x);
         float diffy = Mathf.Abs(playerPos.y - tilePos.y);
 
@@ -26,7 +25,6 @@ public class Reposition : MonoBehaviour
         Vector3 playerDirection = GameManager.Instance.player.InputVector;
 
         // 삼항 연산자를 사용한 조건문
-        // (조건) ? (true일 때 값) : (false일 때 값)
         // Normalized를 함으로 써 대각선으로 이동 시 1값 보다 작다.
         float direcitonX = playerDirection.x < 0 ? -1 : 1;
         float direcitonY = playerDirection.y < 0 ? -1 : 1;
