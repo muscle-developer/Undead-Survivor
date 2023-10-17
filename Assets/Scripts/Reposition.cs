@@ -6,10 +6,17 @@ using UnityEngine.UIElements;
 
 public class Reposition : MonoBehaviour
 {
+    private Collider2D enemyCollider;
+
+    void Awake()
+    {
+        enemyCollider = GetComponent<Collider2D>();   
+    }   
+
     // 오브젝트 충돌을 감지하는 함수 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        // 오브젝트에 Tag가 Area가 아니어야 실행되도록
+        // 오브젝트에 Tag가 Area면 실행되지 않는다.
         if(!collision.CompareTag("Area"))
             return;
 
@@ -29,7 +36,7 @@ public class Reposition : MonoBehaviour
         float direcitonX = playerDirection.x < 0 ? -1 : 1;
         float direcitonY = playerDirection.y < 0 ? -1 : 1;
 
-        // 타일맵이 어떤 태그랑 충돌하는지 체크하기 위해서
+        // 이 스크립트가 달린 오브젝트가 어떤 태그랑 충돌하는지 체크하기 위해서
         switch(transform.tag)
         {   
             // 타일맵일 경우
@@ -42,6 +49,12 @@ public class Reposition : MonoBehaviour
                 break;
             // 적일 경우
             case "Enemy":
+                // 적의 충돌이 활성화 일때만(죽었을 경우 충돌나면 안되기 때문에)
+                if(enemyCollider.enabled)
+                {   
+                    // 플레이어가 가는 방향 * 타일맵의 크기 + 랜덤한 x,y의 위치
+                    this.transform.Translate(playerDirection * 20f + new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0f));  
+                }
                 break;
         }
          
