@@ -1,5 +1,3 @@
- using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -47,5 +45,12 @@ public class Enemy : MonoBehaviour
 
         // 적의 시선(방향)처리 - 적을 기준으로 플레이어가 왼,오 인지 체크해서 바라보게
         enemySpriteRen.flipX = target.position.x < enemyRigidbody.position.x;
+    }
+
+    // 스크립트가 활성화 될 때, 호출되는 이벤트 함수
+    void OnEnable()
+    {
+        // enemy가 Target을 찾을 수 있도록
+        target = GameManager.Instance.player.GetComponent<Rigidbody2D>();
     }
 }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -10,6 +8,7 @@ public class GameManager : MonoBehaviour
     private Transform managersObject;
     [SerializeField]
     public Player player;
+    public PoolManager poolManager;
 
     public void Awake()
     {
