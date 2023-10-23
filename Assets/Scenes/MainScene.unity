@@ -9487,6 +9487,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3759203254314faf966d1a42ff2548d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxPlayTime: 20
   managersObject: {fileID: 1086299431}
   player: {fileID: 1135635653}
   poolManager: {fileID: 1710472343}
@@ -14266,6 +14267,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28a4044a59e824ad7a9bc5d1bf24053f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemySpawnPoint: []
+  enemySpawnData:
+  - enemyType: 0
+    enemySpawnTime: 0.7
+    enemyHP: 10
+    enemySpeed: 1.5
+  - enemyType: 1
+    enemySpawnTime: 0.2
+    enemyHP: 15
+    enemySpeed: 2.4
 --- !u!1 &1693794936
 GameObject:
   m_ObjectHideFlags: 0
