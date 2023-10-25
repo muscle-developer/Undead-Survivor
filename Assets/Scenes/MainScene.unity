@@ -14269,14 +14269,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemySpawnPoint: []
   enemySpawnData:
-  - enemyType: 0
-    enemySpawnTime: 0.7
+  - enemySpawnTime: 1
+    enemyType: 0
     enemyHP: 10
     enemySpeed: 1.5
-  - enemyType: 1
-    enemySpawnTime: 0.2
+  - enemySpawnTime: 0.7
+    enemyType: 1
     enemyHP: 15
     enemySpeed: 2.4
+  - enemySpawnTime: 0.5
+    enemyType: 2
+    enemyHP: 20
+    enemySpeed: 2.8
+  - enemySpawnTime: 0.2
+    enemyType: 4
+    enemyHP: 25
+    enemySpeed: 3.2
 --- !u!1 &1693794936
 GameObject:
   m_ObjectHideFlags: 0
@@ -14354,9 +14362,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefabs:
   - {fileID: 1854851785778804604, guid: 5dbc294dd4de348f0b68c61202b09e6c, type: 3}
-  - {fileID: 7966729466070436750, guid: b8d4e937f55f443a89f89a6d4dbe2033, type: 3}
-  - {fileID: 3888498021729110970, guid: ac78763b993b5432c9859bce03008bac, type: 3}
-  - {fileID: 1633412465043775074, guid: 1ffdbf21848a340008230a599d0b4f87, type: 3}
 --- !u!1 &1758752953
 GameObject:
   m_ObjectHideFlags: 0

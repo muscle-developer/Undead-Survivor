@@ -5,6 +5,12 @@ public class Enemy : MonoBehaviour
     // 적의 속도
     [SerializeField]
     private float enemySpeed = 2.5f;
+    [SerializeField]
+    private float enemyHp = 0f;
+    [SerializeField]
+    private float enemyMaxHp = 0f;
+    // 적의 애니메이션 관리
+    public RuntimeAnimatorController[] animatorControllers;
     // 따라갈 목표
     [SerializeField]
     private Rigidbody2D target;
@@ -13,12 +19,13 @@ public class Enemy : MonoBehaviour
 
     private Rigidbody2D enemyRigidbody;
     private SpriteRenderer enemySpriteRen;
+    private Animator enemyAnimator;
 
     void Awake()
     {    
         enemyRigidbody = GetComponent<Rigidbody2D>();
         enemySpriteRen = GetComponent<SpriteRenderer>();
-        isLive = true;
+        enemyAnimator = GetComponent<Animator>();
     }
 
     private void FixedUpdate()
@@ -52,5 +59,22 @@ public class Enemy : MonoBehaviour
     {
         // enemy가 Target을 찾을 수 있도록
         target = GameManager.Instance.player.GetComponent<Rigidbody2D>();
+        // 스크립트가 활성화 되면 적은 살아있는 상태
+        isLive = true;
+        // 오브젝트 풀링으로 인하여 다시 활성화가 되면 적의 체력도 초기화 시키기
+        enemyHp = enemyMaxHp;
+    }
+
+    // 적의 초기 속성을 적용(초기화)하는 함수 추가
+    public void InitEnemyData(EnemySpawnData enemySpawnData)
+    {
+        // Spawn Data에 저장되어있는 값들을 Enemy에게 적용(초기값)설정
+        // 각 타입에 맞는 적의 애니메이터로 설정
+        enemyAnimator.runtimeAnimatorController = animatorControllers[enemySpawnData.enemyType];
+        this.enemySpeed = enemySpawnData.enemySpeed;
+        // 살아났을 때 적의 hp
+        this.enemyMaxHp = enemySpawnData.enemyHP;
+        // 현재 체력을 동기화 시켜주기 위해
+        this.enemyHp = enemySpawnData.enemyHP;
     }
 }

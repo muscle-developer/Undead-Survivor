@@ -23,9 +23,9 @@ public class EnemySpawner : MonoBehaviour
         // 타이머에 시간을 계속 더해주자
         timer += Time.deltaTime;
         // 10초마다 1레벨이 오르게 설정
-        level =  Mathf.FloorToInt(GameManager.Instance.PlayTiem / 10f);
-        // Level이 0일때는 1초에 주기로 소환 Level이 1이상 부터는 0.5초 주기로 소환
-        if(timer > (level == 0 ? 1f : 0.5f))    
+        level = Mathf.FloorToInt(GameManager.Instance.PlayTiem / 10f);
+        // Level이 0일때는 0번 데이터 사용, 1일 땐 1번.....
+        if(timer > (enemySpawnData[level].enemySpawnTime))    
         {
             EnemySpawn(); 
             timer = 0f;
@@ -36,9 +36,11 @@ public class EnemySpawner : MonoBehaviour
     private void EnemySpawn()
     {
         // 소환되는 타이밍도 레벨에 맞게 다른 몬스터가 생성되게 수정
-        GameObject enemy = GameManager.Instance.poolManager.GetGameobject(level);
+        GameObject enemy = GameManager.Instance.poolManager.GetGameobject(0);
         // 미리 만들어둔 SpawnPoint중 하나에 배치하자
         enemy.transform.position = enemySpawnPoint[UnityEngine.Random.Range(1, enemySpawnPoint.Length)].position;
+        // Init함수를 통해 적의 데이터를 초기화 시켜주기
+        enemy.GetComponent<Enemy>().InitEnemyData(enemySpawnData[level]);
     }
 }
 
@@ -47,10 +49,10 @@ public class EnemySpawner : MonoBehaviour
 // 소환 데이터를 담당하는 클래스
 public class EnemySpawnData
 {
-    // 적 타입
-    public int enemyType = 0; 
     // 적 소환 주기 
     public float enemySpawnTime = 0f;
+    // 적 타입
+    public int enemyType = 0; 
     // 적의 체력
     public float enemyHP = 0f;
     // 적의 이동속도
