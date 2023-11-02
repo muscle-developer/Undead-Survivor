@@ -77,4 +77,32 @@ public class Enemy : MonoBehaviour
         // 현재 체력을 동기화 시켜주기 위해
         this.enemyHp = enemySpawnData.enemyHP;
     }
+
+    // 충돌을 감지하기 위한 함수
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        // 적이 무기와 충돌했는지?
+        if(!collision.CompareTag("Bullet"))
+            return;
+
+        // Bullet 컴포넌트로 접근하여 대미지를 가져와 피격계산하기
+        enemyHp -= collision.GetComponent<Bullet>().damage;
+
+        // 체력을 기준으로 피격인지 사망인지 체크
+        if(enemyHp > 0)
+        {
+            // Live, Hit Action
+
+        }
+        else
+        {   
+            // 적이 죽었을 때
+            EnemyDead();
+        }
+    }
+
+    private void EnemyDead()
+    {
+        this.gameObject.SetActive(false);
+    }
 }

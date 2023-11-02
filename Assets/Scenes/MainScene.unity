@@ -9652,6 +9652,7 @@ Transform:
   - {fileID: 97107176}
   - {fileID: 1253896988}
   - {fileID: 1648265752}
+  - {fileID: 1708674373}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -14316,6 +14317,55 @@ Transform:
   m_Father: {fileID: 1648265752}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1708674372
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1708674373}
+  - component: {fileID: 1708674374}
+  m_Layer: 0
+  m_Name: Weapon Spawner 0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1708674373
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1708674372}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1135635652}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1708674374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1708674372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c87ce52eae27d4065bf86a01d41af0cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 0
+  prefabId: 1
+  weaponDamage: 11
+  count: 5
+  weaponSpeed: 0
 --- !u!1 &1710472341
 GameObject:
   m_ObjectHideFlags: 0
@@ -14360,8 +14410,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 698220ef3fe824499897f76bf1c873cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefabs:
+  prefabs:
   - {fileID: 1854851785778804604, guid: 5dbc294dd4de348f0b68c61202b09e6c, type: 3}
+  - {fileID: 1599513586389971216, guid: 84614bf2d01ab4bc7bb81848ea7c2e66, type: 3}
 --- !u!1 &1758752953
 GameObject:
   m_ObjectHideFlags: 0

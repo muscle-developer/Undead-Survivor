@@ -5,7 +5,7 @@ public class PoolManager : MonoBehaviour
 {
     // 프리팹들을 보관할 변수
     [SerializeField]
-    private GameObject[] enemyPrefabs;
+    private GameObject[] prefabs;
     // 풀 담당을 하는 리스트
     [SerializeField]
     private List<GameObject>[] pools;
@@ -13,7 +13,7 @@ public class PoolManager : MonoBehaviour
     void Awake()
     {
         // 풀 리스트에 Prefab의 개수만큼 넣어주고
-        pools = new List<GameObject>[enemyPrefabs.Length];
+        pools = new List<GameObject>[prefabs.Length];
 
         // 풀 리스트들을 모두 초기화 시켜주자
         for(int i = 0; i < pools.Length; i++)
@@ -45,7 +45,7 @@ public class PoolManager : MonoBehaviour
         if(!selectGameobject)
         {
             // 새롭게 생성해 selectGameobject 에 넣어주자(pool Manager에 생성되게)
-            selectGameobject = Instantiate(enemyPrefabs[index], transform);
+            selectGameobject = Instantiate(prefabs[index], transform);
             // 그 후 풀리스트에 넣어주자(List.Add를 함으로 써 List에 추가된다.)
             pools[index].Add(selectGameobject); 
         }
