@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
 
 public class Weapon : MonoBehaviour
 {
@@ -15,6 +17,8 @@ public class Weapon : MonoBehaviour
     public int count;
     // 속도 
     public float weaponSpeed;
+    // 일정 시간마다 총알이 나가기 위한 타이머
+    private float tiemr = 0f;
 
     void Start()
     {
@@ -30,11 +34,14 @@ public class Weapon : MonoBehaviour
                 // 근접 무기일때 회전할 수 있게
                 this.transform.Rotate(Vector3.back * weaponSpeed * Time.deltaTime);
             break;
-            case 1:
-
-            break;
             default:
-
+                // 일정 시간마다 총알이 나갈 수 있도록
+                tiemr += Time.deltaTime;
+                if(tiemr > weaponSpeed)
+                {
+                    tiemr = 0f;
+                    ShootWeapon();
+                }
             break;
         }   
 
@@ -69,7 +76,7 @@ public class Weapon : MonoBehaviour
             break;
             // 원거리 무기일 때
             case 1:
-
+                weaponSpeed = 0.3f;
             break;
             // 그 이외에 기본 값
             default:
@@ -109,7 +116,29 @@ public class Weapon : MonoBehaviour
             bullet.Translate(bullet.up * 1.5f, Space.World);
 
             // 여기서 대미지와 관통의 수치를 설정해주자(근접무기는 무조건 관통하기 때문에 -1값(∞)으로 설정)
-            bullet.GetComponent<Bullet>().InitBullet(weaponDamage, -1);
+            bullet.GetComponent<Bullet>().InitBullet(weaponDamage, -1, Vector3.zero);
         }
     }   
+
+    // 총알을 발사하는 함수
+    private void ShootWeapon()
+    {
+        // 플레이어와 가까이 있는 타겟을 감지했는지?
+        if(!GameManager.Instance.player.scanner.nearestTarget)
+            return;
+
+        // 적의 위치와 방향
+        Vector3 targetPosition = GameManager.Instance.player.scanner.nearestTarget.position;
+        Vector3 dir = targetPosition - this.transform.position;
+        dir = dir.normalized;
+
+        // 총알의 생성 위치 및 회전 지정
+        Transform bullet = GameManager.Instance.poolManager.GetGameobject(prefabId).transform;
+        bullet.position = this.transform.position;
+        // 목표를 향해 회전하는 함수
+        bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir);
+
+        // 총알에 대한 대미지 및 관통 수치 설정
+        bullet.GetComponent<Bullet>().InitBullet(weaponDamage, count, dir);
+    }
 }

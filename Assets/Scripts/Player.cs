@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     private Animator playerAnimator;
     [SerializeField]
     private float playerSpeed = 5.0f;
+    public Scanner scanner;
 
     void Awake()
     {
@@ -27,6 +28,7 @@ public class Player : MonoBehaviour
         playerRigidBody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer >();
         playerAnimator = GetComponent<Animator>();
+        scanner = GetComponent<Scanner>();
     }
 
     // void Update()
