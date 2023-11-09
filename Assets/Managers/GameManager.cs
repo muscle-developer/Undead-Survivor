@@ -1,15 +1,28 @@
 using UnityEngine;
+using UnityEngine.InputSystem.UI;
 
 public class GameManager : MonoBehaviour
 {
     // 어디에서도 접근 가능 하도록 Static선언
     public static GameManager Instance;
+    [Header("Game Control")]
+    [SerializeField]
     // 내가 플레이한 시간
     private float playTiem = 0f;
     public float PlayTiem { get => playTiem; }
     // 최대 플레이 할 수 있는 시간
     [SerializeField]
     private float maxPlayTime = 2 * 10f; 
+
+    [Header("Player Info")]
+    // 몬스터 처치 시 얻는 데이터(레벨, 킬수, 경험치)
+    public int level;
+    public int kill;
+    public int exp;
+    // 각 레벨의 필요경험치를 보관할 변수
+    public int[] nextExp = { 10, 30, 60, 100, 150, 210, 280, 360, 450, 600};
+
+    [Header("Game Object")]
     [SerializeField]
     private Transform managersObject;
     [SerializeField]
@@ -31,4 +44,16 @@ public class GameManager : MonoBehaviour
         if(playTiem >= maxPlayTime)
             playTiem = maxPlayTime;
     }
+
+    // 경험치 증가 함수
+    public void GetExp()
+    {
+        exp ++;
+
+        if(exp == nextExp[level])
+        {
+            level ++;
+            exp = 0;
+        }
+    }   
 }
