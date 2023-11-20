@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem.UI;
 
@@ -11,11 +12,12 @@ public class GameManager : MonoBehaviour
     private float playTiem = 0f;
     public float PlayTiem { get => playTiem; }
     // 최대 플레이 할 수 있는 시간
-    [SerializeField]
-    private float maxPlayTime = 2 * 10f; 
+    public float maxPlayTime = 2 * 10f; 
 
     [Header("Player Info")]
-    // 몬스터 처치 시 얻는 데이터(레벨, 킬수, 경험치)
+    // 몬스터 처치 시 얻는 데이터(레벨, 킬수, 경험치, 체력)
+    public int hp;
+    public int maxHP = 100;
     public int level;
     public int kill;
     public int exp;
@@ -35,6 +37,12 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(managersObject);
         // Static 으로 선언한 변수는 인스펙터에 나타나지 않음으로 Awake에서 초기화 시켜준다.
         GameManager.Instance = this;
+    }
+
+    void Start()
+    {
+        // 시작시 MaxHP로 초기화
+        hp = maxHP;
     }
 
     void Update()
