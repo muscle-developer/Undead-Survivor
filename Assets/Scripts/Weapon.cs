@@ -1,9 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering;
 
 public class Weapon : MonoBehaviour
 {
@@ -19,11 +14,6 @@ public class Weapon : MonoBehaviour
     public float weaponSpeed;
     // 일정 시간마다 총알이 나가기 위한 타이머
     private float tiemr = 0f;
-
-    void Start()
-    {
-        WeaponInit(); 
-    }
 
     void Update()
     {
@@ -61,11 +51,36 @@ public class Weapon : MonoBehaviour
 
         if(itemId == 0)
             ArrangementWeapon();
+
+        GameManager.Instance.player.BroadcastMessage("ApplyBuff", SendMessageOptions.DontRequireReceiver);
     }
 
     // 초기화 함수
-    public void WeaponInit()
+    public void WeaponInit(ItemData itemData)
     {
+        // 기본값 세팅 (생성될 위치, 무기 이름)
+        name = "Weapon" + itemData.id;
+        transform.parent = GameManager.Instance.player.transform;
+        // 플레이어 안에서 위치를 맞추기 떄문에 지역위치로 설정
+        transform.localPosition = Vector3.zero;
+
+        // 무기의 정보를 스크립터블 오브젝트에 있는 Data 정보로 갱신 (대미지, 갯수 등...)
+        this.itemId = itemData.id;
+        this.weaponDamage = itemData.baseDamage;
+        this.count = itemData.baseCount;
+
+        // 반복문을 통해 프리팹아이디를 찾자
+        for (int i = 0; i < GameManager.Instance.poolManager.prefabs.Length; i++)
+        {
+            // PoolManager에 무기의 프리팹을 넣어놨으니 스크립터블 데이터의 프리팹과 같은지 확인 후 같으면 
+            if(itemData.projectile == GameManager.Instance.poolManager.prefabs[i])
+            {
+                // 프리팹에 아이디를 찾을 수 있다.
+                prefabId = i;
+                break;
+            }
+        }
+
         // 각각의 아이템 종류에 따라 달라지는 초기값들
         switch(itemId)
         {
@@ -83,6 +98,8 @@ public class Weapon : MonoBehaviour
 
             break;
         }
+
+        GameManager.Instance.player.BroadcastMessage("ApplyBuff", SendMessageOptions.DontRequireReceiver);
     }
 
     // 생성된 근접 무기를 배치하는 함수

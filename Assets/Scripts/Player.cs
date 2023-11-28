@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -18,8 +15,7 @@ public class Player : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     [SerializeField]
     private Animator playerAnimator;
-    [SerializeField]
-    private float playerSpeed = 5.0f;
+    public float playerSpeed = 5.0f;
     public Scanner scanner;
 
     void Awake()

@@ -4,8 +4,7 @@ using UnityEngine;
 public class PoolManager : MonoBehaviour
 {
     // 프리팹들을 보관할 변수
-    [SerializeField]
-    private GameObject[] prefabs;
+    public GameObject[] prefabs;
     // 풀 담당을 하는 리스트
     [SerializeField]
     private List<GameObject>[] pools;
