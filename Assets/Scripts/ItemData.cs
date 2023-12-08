@@ -29,4 +29,6 @@ public class ItemData : ScriptableObject
     [Header("Weapon")]
     // 투사체 오브젝트
     public GameObject projectile;
+    // 각 무기에 맞게 데이터 생성을 위해
+    public Sprite hand;
 }

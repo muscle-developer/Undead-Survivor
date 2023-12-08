@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     private Animator playerAnimator;
     public float playerSpeed = 5.0f;
     public Scanner scanner;
+    public Hand[] hands;
 
     void Awake()
     {
@@ -25,6 +26,8 @@ public class Player : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer >();
         playerAnimator = GetComponent<Animator>();
         scanner = GetComponent<Scanner>();
+        // 인자값에 true를 넣음으로 써 비활성화된 오브젝트도 가져올 수 있다.
+        hands = GetComponentsInChildren<Hand>(true);
     }
 
     // void Update()

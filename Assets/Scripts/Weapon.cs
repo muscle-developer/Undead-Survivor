@@ -99,6 +99,11 @@ public class Weapon : MonoBehaviour
             break;
         }
 
+        // 손 세팅하기
+        Hand hand  = GameManager.Instance.player.hands[(int)itemData.itemType];
+        hand.handSprite.sprite = itemData.hand;
+        hand.gameObject.SetActive(true);
+
         GameManager.Instance.player.BroadcastMessage("ApplyBuff", SendMessageOptions.DontRequireReceiver);
     }
 
