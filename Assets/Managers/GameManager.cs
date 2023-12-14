@@ -1,4 +1,5 @@
 using System;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem.UI;
 
@@ -7,6 +8,7 @@ public class GameManager : MonoBehaviour
     // 어디에서도 접근 가능 하도록 Static선언
     public static GameManager Instance;
     [Header("Game Control")]
+    public bool isLive = false;
     [SerializeField]
     // 내가 플레이한 시간
     private float playTiem = 0f;
@@ -30,6 +32,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     public Player player;
     public PoolManager poolManager;
+    public UILevelUp uiLevelUp;
 
     public void Awake()
     {
@@ -43,10 +46,14 @@ public class GameManager : MonoBehaviour
     {
         // 시작시 MaxHP로 초기화
         hp = maxHP;
+        uiLevelUp.BaseWeapon(1);
     }
 
     void Update()
     {
+        if(!isLive)
+            return;
+
         playTiem += Time.deltaTime;
 
         if(playTiem >= maxPlayTime)
@@ -57,11 +64,24 @@ public class GameManager : MonoBehaviour
     public void GetExp()
     {
         exp ++;
-
-        if(exp == nextExp[level])
+        if(exp == nextExp[Mathf.Min(level, nextExp.Length - 1)])
         {
             level ++;
             exp = 0;
+            uiLevelUp.ShowLevelUpPopup();
         }
     }   
+
+    // 일시정지, 재시작 함수
+    public void GameResume()
+    {
+        isLive = true;
+        Time.timeScale = 1;
+    }
+
+    public void GameStop()
+    {
+        isLive = false;
+        Time.timeScale = 0;
+    }
 }

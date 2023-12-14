@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,8 @@ public class ItemLevelUp : MonoBehaviour
 
     Image iconimage;
     Text levelText;
+    Text  nameText;
+    Text descText;
 
     void Awake()
     {
@@ -20,15 +23,39 @@ public class ItemLevelUp : MonoBehaviour
         iconimage.sprite = data.itemThumbnailImage;
         
         Text[] texts = GetComponentsInChildren<Text>();
+        // 자식오브젝트 순서
         levelText = texts[0];
+        nameText = texts[1];
+        descText = texts[2];
+
+        nameText.text = data.itemName;
     }
 
-    void LateUpdate()
+    // 오브젝트가 활성화 됐을 때 실행
+    void OnEnable()
     {
         if (level == data.damages.Length)
             levelText.text = "Lv. Max";
         else
             levelText.text = "Lv." + (level + 1);
+
+        switch (data.itemType)
+        {
+            // 근접,원거리 무기만 설명 두줄
+            case ItemData.ItemType.MELEE:
+            case ItemData.ItemType.RANGE:
+                descText.text = string.Format(data.itemDesc, data.damages[level] * 100, data.counts[level]);
+            break;
+            // 글러브, 신발 무기 설명 한줄
+            case ItemData.ItemType.GLOVE:
+            case ItemData.ItemType.SHOE:
+                descText.text = string.Format(data.itemDesc, data.damages[level] * 100);
+            break;   
+            // 그 이외엔 값이 필요없음
+            default:
+                descText.text = string.Format(data.itemDesc);
+            break;
+        }
     }
 
     // 레벨업 버튼을 누르면 작동하는 이벤트 함수

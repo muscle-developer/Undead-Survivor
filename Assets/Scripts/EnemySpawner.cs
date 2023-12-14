@@ -20,6 +20,9 @@ public class EnemySpawner : MonoBehaviour
 
     void Update()
     {
+        if(!GameManager.Instance.isLive)
+            return;
+            
         // 타이머에 시간을 계속 더해주자
         timer += Time.deltaTime;
         // 10초마다 1레벨이 오르게 설정

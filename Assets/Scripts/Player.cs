@@ -39,7 +39,10 @@ public class Player : MonoBehaviour
 
     // 물리 연산 프레임마다 호출되는 생명주기 함수
     void FixedUpdate()
-    {   
+    {      
+        if(!GameManager.Instance.isLive)
+            return;
+            
         // 이동할 위치
         Vector2 nextVector = inputVector * playerSpeed * Time.fixedDeltaTime;
         // 위치 이동 - 현재 나의 위치 + 내가 이동할 위치
@@ -49,6 +52,9 @@ public class Player : MonoBehaviour
     // 프레임이 종료 되기 전 호출되는 함수
     void LateUpdate()
     {   
+        if(!GameManager.Instance.isLive)
+            return;
+
         // 움직이는 모션을 주기 위해 파라메터와 동일한 타입의 함수 호출, SetFloat("파라메터 이름", 반영할 값) , magnitude -> 벡터의 길이를 반환
         playerAnimator.SetFloat("Speed", inputVector.magnitude);
 

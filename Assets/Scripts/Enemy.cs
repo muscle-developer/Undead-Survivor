@@ -36,6 +36,9 @@ public class Enemy : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(!GameManager.Instance.isLive)
+            return;
+
         // 만약 몬스터가 살아있지 않을 경우 OR 몬스터가 피격중일 때 실행 X
         if(!isLive || enemyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
             return;
@@ -53,7 +56,7 @@ public class Enemy : MonoBehaviour
     // 모든 Update 함수가 호출된 후, 마지막으로 호출됩니다. 주로 오브젝트를 따라가게 설정한 카메라는 LateUpdate 를 사용
     private void LateUpdate()
     {
-        if(!isLive)
+        if(!isLive || !GameManager.Instance.isLive)
             return;
 
         // 적의 시선(방향)처리 - 적을 기준으로 플레이어가 왼,오 인지 체크해서 바라보게

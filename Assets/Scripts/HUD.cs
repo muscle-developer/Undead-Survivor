@@ -42,7 +42,7 @@ public class HUD : MonoBehaviour
             {
                 case InfoType.EXP:
                     float currentExp = GameManager.Instance.exp;
-                    float maxExp = GameManager.Instance.nextExp[GameManager.Instance.level];
+                    float maxExp = GameManager.Instance.nextExp[Mathf.Min(GameManager.Instance.level, GameManager.Instance.nextExp.Length - 1)];
 
                     // 현재 경험치 / 최대 경험치 
                     expSlider.value = currentExp / maxExp;

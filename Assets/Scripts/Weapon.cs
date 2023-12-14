@@ -17,6 +17,9 @@ public class Weapon : MonoBehaviour
 
     void Update()
     {
+        if(!GameManager.Instance.isLive)
+            return;
+
         // 각각의 아이템 종류에 따라 달라지는 회전값들
         switch(itemId)
         {
