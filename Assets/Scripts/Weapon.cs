@@ -37,13 +37,6 @@ public class Weapon : MonoBehaviour
                 }
             break;
         }   
-
-        // 레벨업에 따른 무기 소환을 위해 테스트 코드 작성
-        if(Input.GetKeyDown(KeyCode.Space))
-        {   
-            // 대미지 - 20, 갯수 - 5
-            WeaponLevelUp(20 ,5);
-        }
     }
 
     // 무기 레벨업 함수

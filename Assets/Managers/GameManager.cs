@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,8 +20,8 @@ public class GameManager : MonoBehaviour
 
     [Header("Player Info")]
     // 몬스터 처치 시 얻는 데이터(레벨, 킬수, 경험치, 체력)
-    public int hp;
-    public int maxHP = 100;
+    public float hp;
+    public float maxHP = 100;
     public int level;
     public int kill;
     public int exp;
@@ -33,6 +35,8 @@ public class GameManager : MonoBehaviour
     public Player player;
     public PoolManager poolManager;
     public UILevelUp uiLevelUp;
+    public GameResultPopup uiResultPopup;
+    public GameObject enemyCleaner;
 
     public void Awake()
     {
@@ -42,12 +46,46 @@ public class GameManager : MonoBehaviour
         GameManager.Instance = this;
     }
 
-    void Start()
+    public void GameStart()
     {
         // 시작시 MaxHP로 초기화
         hp = maxHP;
-        uiLevelUp.BaseWeapon(1);
+        uiLevelUp.BaseWeapon(0);
+        GameResume();
     }
+
+    public void GameOver()  
+    {
+        StartCoroutine(GameOverCoroutine());
+    }
+
+    // 게임오버 시 딜레이를 주기 위한 코루틴 함수
+    private IEnumerator GameOverCoroutine()
+    {
+        // 기본값 세팅(플레이 초기 설정값)
+        isLive = false;
+        yield return new WaitForSeconds(0.5f);
+        uiResultPopup.gameObject.SetActive(true);
+        uiResultPopup.GameLose();
+        GameStop();
+    } 
+
+    public void GameVictory()  
+    {
+        StartCoroutine(GameVictoryCoroutine());
+    }
+
+    // 게임승리 시 딜레이를 주기 위한 코루틴 함수
+    private IEnumerator GameVictoryCoroutine()
+    {
+        // 기본값 세팅(플레이 초기 설정값)
+        isLive = false;
+        enemyCleaner.gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
+        uiResultPopup.gameObject.SetActive(true);
+        uiResultPopup.GameVictory();
+        GameStop();
+    } 
 
     void Update()
     {
@@ -57,12 +95,19 @@ public class GameManager : MonoBehaviour
         playTiem += Time.deltaTime;
 
         if(playTiem >= maxPlayTime)
+        {
             playTiem = maxPlayTime;
+            GameVictory();
+        }
     }
 
     // 경험치 증가 함수
     public void GetExp()
-    {
+    {   
+        // 게임에서 이겼을 때 EnemyCleaner 오브젝트가 활성화 되면서 경험치를 얻는것을 방지하기 위한처리
+        if(!isLive)
+            return;
+
         exp ++;
         if(exp == nextExp[Mathf.Min(level, nextExp.Length - 1)])
         {
@@ -72,7 +117,7 @@ public class GameManager : MonoBehaviour
         }
     }   
 
-    // 일시정지, 재시작 함수
+    // 시간 일시정지, 재시작 함수
     public void GameResume()
     {
         isLive = true;
@@ -83,5 +128,11 @@ public class GameManager : MonoBehaviour
     {
         isLive = false;
         Time.timeScale = 0;
+    }
+
+    // 플레이어가 죽었을 때 초기 화면으로 설정하는 함수
+    public void GameReTry()
+    {
+        SceneManager.LoadScene("MainScene");
     }
 }

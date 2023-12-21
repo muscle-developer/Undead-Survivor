@@ -69,4 +69,26 @@ public class Player : MonoBehaviour
     {
         inputVector = value.Get<Vector2>();
     }
+
+    // 몬스터와 충돌 감지 함수
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        if (!GameManager.Instance.isLive)
+            return;
+
+        GameManager.Instance.hp -= Time.deltaTime * 10f;
+
+        // 플레이어 사망시 비활성화 되어야 하는 오브젝트들 처리
+        if(GameManager.Instance.hp < 0)
+        {
+            for(int i = 2; i < transform.childCount; i++)
+            {
+                transform.GetChild(i).gameObject.SetActive(false);
+            }
+
+            // Dead 애니메이션 실행
+            playerAnimator.SetTrigger("Dead");
+            GameManager.Instance.GameOver();
+        }
+    }
 }
