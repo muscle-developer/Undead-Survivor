@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
@@ -82,12 +83,12 @@ public class Weapon : MonoBehaviour
         {
             // 근접 무기일 때
             case 0:
-                weaponSpeed = 150;
+                weaponSpeed = 150 * Character.WeaponSpeed;
                 ArrangementWeapon();
             break;
             // 원거리 무기일 때
             case 1:
-                weaponSpeed = 0.3f;
+                weaponSpeed = 0.5f * Character.WeaponRate;
             break;
             // 그 이외에 기본 값
             default:

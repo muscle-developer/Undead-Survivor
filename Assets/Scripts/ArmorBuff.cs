@@ -57,11 +57,13 @@ public class ArmorBuff : MonoBehaviour
                 // 근접 무기일 때
                 case 0:
                     // 레벨업 시 = 기본값(150) + (기본값(150) * 백분율)
-                    tmp.weaponSpeed = 150f + (150f * rate);
+                    float speed = 150 * Character.WeaponSpeed;
+                    tmp.weaponSpeed = speed + (speed * rate);
                 break;
                 // 원거리 무기일 때
                 default:
-                    tmp.weaponSpeed = 0.3f * (1 - rate);
+                    speed = 0.5f * Character.WeaponRate;
+                    tmp.weaponSpeed = speed * (1 - rate);
                     break;
             } 
         }
@@ -71,7 +73,7 @@ public class ArmorBuff : MonoBehaviour
     private void SpeedUp()
     {
         // 플렝어 기본 이동속도
-        float speed = 5f;
+        float speed = 3f * Character.Speed;
         GameManager.Instance.player.playerSpeed = speed + speed * rate; 
     }
 }

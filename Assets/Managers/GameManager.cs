@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
     public float maxPlayTime = 2 * 10f; 
 
     [Header("Player Info")]
+    // 캐릭터를 고르기 위한 아이디
+    public int playerId;
     // 몬스터 처치 시 얻는 데이터(레벨, 킬수, 경험치, 체력)
     public float hp;
     public float maxHP = 100;
@@ -46,11 +48,13 @@ public class GameManager : MonoBehaviour
         GameManager.Instance = this;
     }
 
-    public void GameStart()
+    public void GameStart(int id)
     {
+        playerId = id; 
         // 시작시 MaxHP로 초기화
         hp = maxHP;
-        uiLevelUp.BaseWeapon(0);
+        player.gameObject.SetActive(true);
+        uiLevelUp.BaseWeapon(playerId);
         GameResume();
     }
 

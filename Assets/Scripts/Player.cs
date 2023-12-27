@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -18,6 +19,7 @@ public class Player : MonoBehaviour
     public float playerSpeed = 5.0f;
     public Scanner scanner;
     public Hand[] hands;
+    public RuntimeAnimatorController[] animController;
 
     void Awake()
     {
@@ -28,6 +30,12 @@ public class Player : MonoBehaviour
         scanner = GetComponent<Scanner>();
         // 인자값에 true를 넣음으로 써 비활성화된 오브젝트도 가져올 수 있다.
         hands = GetComponentsInChildren<Hand>(true);
+    }
+
+    void OnEnable()
+    {
+        playerSpeed *= Character.Speed;
+        playerAnimator.runtimeAnimatorController = animController[GameManager.Instance.playerId];
     }
 
     // void Update()
