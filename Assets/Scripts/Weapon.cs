@@ -43,8 +43,8 @@ public class Weapon : MonoBehaviour
     // 무기 레벨업 함수
     public void WeaponLevelUp(float damage, int count)
     {
-        this.weaponDamage = damage;
-        this.count += count;
+        this.weaponDamage = damage * Character.WeaponDamage;
+        this.count += count + Character.Count;
 
         if(itemId == 0)
             ArrangementWeapon();
@@ -63,8 +63,8 @@ public class Weapon : MonoBehaviour
 
         // 무기의 정보를 스크립터블 오브젝트에 있는 Data 정보로 갱신 (대미지, 갯수 등...)
         this.itemId = itemData.id;
-        this.weaponDamage = itemData.baseDamage;
-        this.count = itemData.baseCount;
+        this.weaponDamage = itemData.baseDamage * Character.WeaponDamage;
+        this.count = itemData.baseCount + Character.Count;
 
         // 반복문을 통해 프리팹아이디를 찾자
         for (int i = 0; i < GameManager.Instance.poolManager.prefabs.Length; i++)

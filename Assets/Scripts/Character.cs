@@ -25,5 +25,17 @@ public class Character : MonoBehaviour
         get { return GameManager.Instance.playerId == 1 ? 0.9f : 1f; } 
     }
 
+    // 무기 대미지
+    public static float WeaponDamage
+    {
+        get { return GameManager.Instance.playerId == 2 ? 1.2f : 1f; } 
+    }
+
+    // 무기 갯수
+    public static int Count
+    {
+        get { return GameManager.Instance.playerId == 3 ? 1 : 0; } 
+    }
+
     // 예를 들어 여러가지 캐릭터가 더 추가된다면 위처럼 똑같이 더 추가해서 관리해주면 된다.
 }

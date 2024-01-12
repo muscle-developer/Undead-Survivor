@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
         // 시작시 MaxHP로 초기화
         hp = maxHP;
         player.gameObject.SetActive(true);
-        uiLevelUp.BaseWeapon(playerId);
+        uiLevelUp.BaseWeapon(playerId % 2);
         GameResume();
     }
 
