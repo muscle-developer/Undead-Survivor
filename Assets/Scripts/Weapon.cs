@@ -134,8 +134,8 @@ public class Weapon : MonoBehaviour
             bullet.Rotate(rotVector);
             bullet.Translate(bullet.up * 1.5f, Space.World);
 
-            // 여기서 대미지와 관통의 수치를 설정해주자(근접무기는 무조건 관통하기 때문에 -1값(∞)으로 설정)
-            bullet.GetComponent<Bullet>().InitBullet(weaponDamage, -1, Vector3.zero);
+            // 여기서 대미지와 관통의 수치를 설정해주자(근접무기는 무조건 관통하기 때문에 -100값(∞)으로 설정)
+            bullet.GetComponent<Bullet>().InitBullet(weaponDamage, -100, Vector3.zero);
         }
     }   
 
@@ -159,5 +159,7 @@ public class Weapon : MonoBehaviour
 
         // 총알에 대한 대미지 및 관통 수치 설정
         bullet.GetComponent<Bullet>().InitBullet(weaponDamage, count, dir);
+
+        AudioManager.instance.PlaySFX(AudioManager.SFX.RANGE);
     }
 }

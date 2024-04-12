@@ -20,6 +20,9 @@ public class UILevelUp : MonoBehaviour
         RandomLevelUpEffect();
         rect.localScale = Vector3.one;
         GameManager.Instance.GameStop();
+
+        AudioManager.instance.PauseBGM();
+        AudioManager.instance.PlaySFX(AudioManager.SFX.LEVELUP);
     }   
 
     public void HideLevelUpPopup()
@@ -28,6 +31,9 @@ public class UILevelUp : MonoBehaviour
         // this.gameObject.SetActive(false);
         rect.localScale = Vector3.zero;
         GameManager.Instance.GameResume();
+
+        AudioManager.instance.UnPause();
+        AudioManager.instance.PlaySFX(AudioManager.SFX.SELECT);
     }
 
     // 기본무기를 지급하는 함수

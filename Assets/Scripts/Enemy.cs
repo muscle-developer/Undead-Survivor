@@ -108,6 +108,7 @@ public class Enemy : MonoBehaviour
             // Live, Hit Action
             // 몬스터 피격 애니메이션 실행
             enemyAnimator.SetTrigger("Hit");
+            AudioManager.instance.PlaySFX(AudioManager.SFX.HIT);
         }
         else
         {   
@@ -121,7 +122,11 @@ public class Enemy : MonoBehaviour
             enemyAnimator.SetBool("Dead", true);
             // 죽은경우 킬증가 및 경험치 증가
             GameManager.Instance.kill++;
-            GameManager.Instance.GetExp();
+            GameManager.Instance.GetExp(); 
+            
+            // 게임 종료 시 적이 죽는소리는 나면 안되기 때문에
+            if(GameManager.Instance.isLive)
+                AudioManager.instance.PlaySFX(AudioManager.SFX.DEAD);
         }
     }
 

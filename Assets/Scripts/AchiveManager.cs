@@ -117,6 +117,7 @@ public class AchiveManager : MonoBehaviour
     IEnumerator NoticeCoroutine()
     {
         uiNotice.SetActive(true);
+        AudioManager.instance.PlaySFX(AudioManager.SFX.LEVELUP);
 
         yield return wait;
         

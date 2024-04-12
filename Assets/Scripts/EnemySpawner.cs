@@ -9,13 +9,17 @@ public class EnemySpawner : MonoBehaviour
     public EnemySpawnData[] enemySpawnData;
     // 적 소환 타이머
     private float timer = 0f;
-    //난이도를 설정할 변수
+    // 난이도를 설정할 변수
     private int level = 0;
+    // 소환 레벨(난이도)을 변경하는 시간(주기)
+    private int levelTime = 0;
 
     void Awake()
     {
         // EnemySpawner가 붙어있는 자식 오브젝트에 생성되기 때문에 GetComponentsInChildren를 써준다.
         enemySpawnPoint = GetComponentsInChildren<Transform>();
+        // 소환 레벨 - (게임 종료시간 / 적의 데이터 갯수(level))
+        levelTime = (int)GameManager.Instance.maxPlayTime / enemySpawnData.Length;
     }
 
     void Update()
@@ -25,8 +29,8 @@ public class EnemySpawner : MonoBehaviour
             
         // 타이머에 시간을 계속 더해주자
         timer += Time.deltaTime;
-        // 10초마다 1레벨이 오르게 설정
-        level = Mathf.FloorToInt(GameManager.Instance.PlayTiem / 10f);
+        // levelTime 마다 적의 레벨이 오르게 설정
+        level = Mathf.Min(Mathf.FloorToInt(GameManager.Instance.PlayTiem / levelTime), enemySpawnData.Length - 1);
         // Level이 0일때는 0번 데이터 사용, 1일 땐 1번.....
         if(timer > (enemySpawnData[level].enemySpawnTime))    
         {

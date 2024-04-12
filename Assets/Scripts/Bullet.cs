@@ -25,8 +25,8 @@ public class Bullet : MonoBehaviour
 
         float bulletSpeed = 15f;
 
-        // 근접무기 관통은 -1, 그렇기에 관통되는 것들만 체크
-        if(per > -1)
+        // 근접무기 관통은 -값, 그렇기에 관통되는 것들만 체크
+        if(per >= 0)
         {
             // 총알의 속도를 주자
             rigidbody2D.velocity = dir * bulletSpeed;
@@ -37,17 +37,26 @@ public class Bullet : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collision)
     {
         // 적이 아니거나 OR 근접무기일 때 
-        if(!collision.CompareTag("Enemy") || per == -1)
+        if(!collision.CompareTag("Enemy") || per == -100)
             return;
 
-        // 적이 맞을수록 관통력은 내려가고 -1이 되면 사라진다.
+        // 적이 맞을수록 관통력은 내려가고 -값이 되면 사라진다.
         per--;        
 
-        if(per == -1)
+        if(per < 0)
         {
             // 재활용을 위해 속도 초기화
             rigidbody2D.velocity = Vector2.zero;
             this.gameObject.SetActive(false);
         }
+    }
+
+    void OnTriggerExit2D(Collider2D collision)
+    {
+        // Area 이고 원거리무기일 때만 적용되게
+        if(!collision.CompareTag("Area") || per == -100)
+            return;   
+
+        this.gameObject.SetActive(false);
     }
 }

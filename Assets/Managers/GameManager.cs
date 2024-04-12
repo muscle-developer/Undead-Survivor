@@ -56,6 +56,9 @@ public class GameManager : MonoBehaviour
         player.gameObject.SetActive(true);
         uiLevelUp.BaseWeapon(playerId % 2);
         GameResume();
+
+        AudioManager.instance.PlayBGM(true);
+        AudioManager.instance.PlaySFX(AudioManager.SFX.SELECT);
     }
 
     public void GameOver()  
@@ -72,6 +75,9 @@ public class GameManager : MonoBehaviour
         uiResultPopup.gameObject.SetActive(true);
         uiResultPopup.GameLose();
         GameStop();
+
+        AudioManager.instance.PlayBGM(false);
+        AudioManager.instance.PlaySFX(AudioManager.SFX.LOSE);
     } 
 
     public void GameVictory()  
@@ -89,6 +95,9 @@ public class GameManager : MonoBehaviour
         uiResultPopup.gameObject.SetActive(true);
         uiResultPopup.GameVictory();
         GameStop();
+        
+        AudioManager.instance.PlayBGM(false);
+        AudioManager.instance.PlaySFX(AudioManager.SFX.WIN);
     } 
 
     void Update()
