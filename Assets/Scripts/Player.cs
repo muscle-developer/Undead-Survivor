@@ -1,0 +1,102 @@
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class Player : MonoBehaviour
+{
+    [SerializeField]
+    private Vector2 inputVector;
+    public Vector2 InputVector
+    {
+        get => inputVector;
+    }
+    [SerializeField]
+    private Rigidbody2D playerRigidBody;
+    [SerializeField]
+    private SpriteRenderer spriteRenderer;
+    [SerializeField]
+    private Animator playerAnimator;
+    public float playerSpeed = 5.0f;
+    public Scanner scanner;
+    public Hand[] hands;
+    public RuntimeAnimatorController[] animController;
+
+    void Awake()
+    {
+        // Player의 RigidBody 컴포넌트를 선언한 변수들 초기화
+        playerRigidBody = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer >();
+        playerAnimator = GetComponent<Animator>();
+        scanner = GetComponent<Scanner>();
+        // 인자값에 true를 넣음으로 써 비활성화된 오브젝트도 가져올 수 있다.
+        hands = GetComponentsInChildren<Hand>(true);
+    }
+
+    void OnEnable()
+    {
+        playerSpeed *= Character.Speed;
+        playerAnimator.runtimeAnimatorController = animController[GameManager.Instance.playerId];
+    }
+
+    // void Update()
+    // {
+    //     // x와 y축에 가로,세로로 이동 할 수 있도록 입력값 받아오기
+    //     inputVector.x = Input.GetAxis("Horizontal");
+    //     inputVector.y = Input.GetAxis("Vertical");
+    // }   
+
+    // 물리 연산 프레임마다 호출되는 생명주기 함수
+    void FixedUpdate()
+    {      
+        if(!GameManager.Instance.isLive)
+            return;
+            
+        // 이동할 위치
+        Vector2 nextVector = inputVector * playerSpeed * Time.fixedDeltaTime;
+        // 위치 이동 - 현재 나의 위치 + 내가 이동할 위치
+        playerRigidBody.MovePosition(playerRigidBody.position + nextVector);
+    }   
+    
+    // 프레임이 종료 되기 전 호출되는 함수
+    void LateUpdate()
+    {   
+        if(!GameManager.Instance.isLive)
+            return;
+
+        // 움직이는 모션을 주기 위해 파라메터와 동일한 타입의 함수 호출, SetFloat("파라메터 이름", 반영할 값) , magnitude -> 벡터의 길이를 반환
+        playerAnimator.SetFloat("Speed", inputVector.magnitude);
+
+        // 가로 x의 움직임이 - , + 가 될 떼 
+        // 현재 플레이어는 우측을 바라보기 때문에 - 값이 됐을 때만 flipX 를 true로 만들어준다.
+        if(inputVector.x != 0)
+            spriteRenderer.flipX = inputVector.x < 0;
+    }
+
+    // Input System 에서 제공하는 이동함수
+    private void OnMove(InputValue value)
+    {
+        inputVector = value.Get<Vector2>();
+    }
+
+    // 몬스터와 충돌 감지 함수
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        if (!GameManager.Instance.isLive)
+            return;
+
+        GameManager.Instance.hp -= Time.deltaTime * 10f;
+
+        // 플레이어 사망시 비활성화 되어야 하는 오브젝트들 처리
+        if(GameManager.Instance.hp < 0)
+        {
+            for(int i = 2; i < transform.childCount; i++)
+            {
+                transform.GetChild(i).gameObject.SetActive(false);
+            }
+
+            // Dead 애니메이션 실행
+            playerAnimator.SetTrigger("Dead");
+            GameManager.Instance.GameOver();
+        }
+    }
+}

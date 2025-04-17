@@ -1,0 +1,67 @@
+using System;
+using UnityEngine;
+
+// 적의 스폰관련 클래스
+public class EnemySpawner : MonoBehaviour
+{  
+    // 적이 생성될 위치(배열)
+    public Transform[] enemySpawnPoint;
+    public EnemySpawnData[] enemySpawnData;
+    // 적 소환 타이머
+    private float timer = 0f;
+    // 난이도를 설정할 변수
+    private int level = 0;
+    // 소환 레벨(난이도)을 변경하는 시간(주기)
+    private int levelTime = 0;
+
+    void Awake()
+    {
+        // EnemySpawner가 붙어있는 자식 오브젝트에 생성되기 때문에 GetComponentsInChildren를 써준다.
+        enemySpawnPoint = GetComponentsInChildren<Transform>();
+        // 소환 레벨 - (게임 종료시간 / 적의 데이터 갯수(level))
+        levelTime = (int)GameManager.Instance.maxPlayTime / enemySpawnData.Length;
+    }
+
+    void Update()
+    {
+        if(!GameManager.Instance.isLive)
+            return;
+            
+        // 타이머에 시간을 계속 더해주자
+        timer += Time.deltaTime;
+        // levelTime 마다 적의 레벨이 오르게 설정
+        level = Mathf.Min(Mathf.FloorToInt(GameManager.Instance.PlayTiem / levelTime), enemySpawnData.Length - 1);
+        // Level이 0일때는 0번 데이터 사용, 1일 땐 1번.....
+        if(timer > (enemySpawnData[level].enemySpawnTime))    
+        {
+            EnemySpawn(); 
+            timer = 0f;
+        }
+    }
+
+    // 적을 소환하는 함수
+    private void EnemySpawn()
+    {
+        // 소환되는 타이밍도 레벨에 맞게 다른 몬스터가 생성되게 수정
+        GameObject enemy = GameManager.Instance.poolManager.GetGameobject(0);
+        // 미리 만들어둔 SpawnPoint중 하나에 배치하자
+        enemy.transform.position = enemySpawnPoint[UnityEngine.Random.Range(1, enemySpawnPoint.Length)].position;
+        // Init함수를 통해 적의 데이터를 초기화 시켜주기
+        enemy.GetComponent<Enemy>().InitEnemyData(enemySpawnData[level]);
+    }
+}
+
+// 직렬화[Serialization]:개체를 저장 혹은 전송하기 위해 변환, 즉 Inspector상에 보여주기 위해서 선언
+[Serializable]
+// 소환 데이터를 담당하는 클래스
+public class EnemySpawnData
+{
+    // 적 소환 주기 
+    public float enemySpawnTime = 0f;
+    // 적 타입
+    public int enemyType = 0; 
+    // 적의 체력
+    public float enemyHP = 0f;
+    // 적의 이동속도
+    public float enemySpeed = 0f;
+}
