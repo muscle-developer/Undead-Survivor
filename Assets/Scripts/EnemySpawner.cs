@@ -39,7 +39,7 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    // 적을 소환하는 함수
+    // 적을 소환하는 함수 (수정필요)
     private void EnemySpawn()
     {
         // 소환되는 타이밍도 레벨에 맞게 다른 몬스터가 생성되게 수정
